@@ -13,7 +13,8 @@
   },
   "homepage": "https://github.com/ticelli/ticelli-wit-middleware#readme",
   "dependencies": {
-    "node-wit": "^4.3.0"
+    "node-wit": "^4.3.0",
+    "ticelli-bot": "github:ticelli/bot"
   },
   "devDependencies": {
     "eslint": "^4.8.0",
