@@ -1,4 +1,6 @@
 const AbstractRouter = require('ticelli-bot/router');
+const merge = require('lodash.merge');
+
 const { Wit } = require('node-wit');
 
 module.exports = class WitAiRouter extends AbstractRouter {
@@ -8,8 +10,32 @@ module.exports = class WitAiRouter extends AbstractRouter {
   }
 
   async run(req) {
-    if (this.witInstance && req.body.event && req.body.event.text) {
+    if (req.body.event && req.body.event.text) {
       req.wit = await this.witInstance.message(req.body.event.text);
+      Object.defineProperty(req, 'intent', {
+        get() {
+          const { entities } = req.wit;
+          return Object.keys(entities).reduce((o, name) => {
+            const info = entities[name].reduce(merge);
+            if (info.type !== 'value') {
+              o[name] = info;
+            }
+            return o;
+          }, {});
+        }
+      });
+      Object.defineProperty(req, 'entities', {
+        get() {
+          const { entities } = req.wit;
+          return Object.keys(entities).reduce((o, name) => {
+            const info = entities[name];
+            if (info.map(v => v.type === 'value').reduce((a, b) => a || b, false)) {
+              o[name] = info;
+            }
+            return o;
+          }, {});
+        }
+      });
     }
   }
 
