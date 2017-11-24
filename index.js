@@ -29,7 +29,7 @@ module.exports = class WitAiRouter extends AbstractRouter {
           const { entities } = req.wit;
           return Object.keys(entities).reduce((o, name) => {
             const info = entities[name];
-            if (info.map(v => v.type === 'value').reduce((a, b) => a || b, false)) {
+            if (info.map(v => ['value', 'interval'].includes(v.type)).reduce((a, b) => a || b, false)) {
               o[name] = info;
             }
             return o;
