@@ -1,7 +1,6 @@
 {
   "name": "ticelli-wit-middleware",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.2",
   "main": "index.js",
   "scripts": {
     "lint": "eslint ."
