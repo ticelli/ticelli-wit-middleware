@@ -13,10 +13,10 @@ module.exports = class WitAiRouter extends AbstractRouter {
     if (event.text) {
       const { entities } = await this.witInstance.message(event.text);
 
-      train.intents = Object.keys(entities).reduce((o, name) => {
+      train.intents = Object.assign(train.intents || {}, Object.keys(entities).reduce((o, name) => {
         o[name] = entities[name].map(({ value }) => value);
         return o;
-      }, {});
+      }, {}));
 
       train.entities = Object.keys(entities).reduce((o, name) => {
         const info = entities[name];
