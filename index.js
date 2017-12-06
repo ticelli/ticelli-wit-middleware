@@ -10,8 +10,12 @@ module.exports = class WitAiRouter extends AbstractRouter {
 
   async run(train) {
     const { event } = train.request.body;
-    if (event.text) {
-      const { entities } = await this.witInstance.message(event.text);
+    let { text } = train.request.body;
+    if (!text && event && event.text) {
+      text = event.text;
+    }
+    if (text) {
+      const { entities } = await this.witInstance.message(text);
 
       train.intents = Object.assign(train.intents || {}, Object.keys(entities).reduce((o, name) => {
         o[name] = entities[name].map(({ value }) => value);
